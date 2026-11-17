@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Spectrum Animation</title>
+    <style>
+        #canvas-container {
+            width: 200px; /* 33% of 600px */
+            height: 200px; /* 33% of 600px */
+            display: block;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        #canvas {
+            width: 600px;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <canvas id="canvas" width="600" height="600"></canvas>
+    </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const baseColors = ['red', 'green', 'blue'];
+        const ratio = 3.20;
+        const baseCycleCount = Math.floor(60 / ratio); // Each pattern displayed (60 / 3.20) times
+
+        const colorPattern = [];
+        for (let i = 0; i < baseCycleCount; i++) {
+            colorPattern.push(...baseColors);
+        }
+
+        const totalCycles = 60;
+        const interval = 1000 / totalCycles; // 60 Hz
+        const pixelSize = 1;
+        let index = 0;
+
+        function changeColor() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+            for (let y = 0; y < 600; y += pixelSize) {
+                for (let x = 0; x < 600; x += pixelSize) {
+                    ctx.fillStyle = colorPattern[(index + Math.floor(x / pixelSize) + Math.floor(y / pixelSize)) % colorPattern.length];
+                    ctx.fillRect(x, y, pixelSize, pixelSize);
+                }
+            }
+            
+            index = (index + 1) % colorPattern.length;
+        }
+
+        setInterval(changeColor, interval);
+    </script>
+</body>
+</html>
